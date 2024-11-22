@@ -1,33 +1,36 @@
 package com.sm.employee.service;
 
-import org.modelmapper.ModelMapper;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sm.employee.entity.Employee;
-import com.sm.employee.repo.EmployeeRepo;
-import com.sm.employee.reponse.EmployeeReponse;
+import com.sm.employee.repo.EmployeeRepository;
 
 @Service
 public class EmployeeService {
 
-	@Autowired
-	private EmployeeRepo employeeRepo;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+    // Create or Update employee
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 
-	public EmployeeReponse getEmployeeById(Long id) {
-		Employee employee = employeeRepo.findById(id).get();
+    // Get all employees
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
 
-		EmployeeReponse employeeReponse = modelMapper.map(employee, EmployeeReponse.class);
+    // Get employee by ID
+    public Optional<Employee> getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
+    }
 
-		return employeeReponse;
-
-	}
-
-	public Employee saveEmployee(Employee employee) {
-		return employeeRepo.save(employee);
-	}
-
+    // Delete employee by ID
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
 }
